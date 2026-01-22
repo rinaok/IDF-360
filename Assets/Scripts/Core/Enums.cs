@@ -2,6 +2,7 @@ public enum GamePhase
 {
     GazaOnly,
     GazaLebanon,
+    GazaLebanonYemen,
     FinalIran
 }
 

@@ -36,13 +36,13 @@ public class Missile : MonoBehaviour
 
     void HitTarget()
     {
-        Debug.Log("Missile hit target!");
+        Debug.LogError("Missile hit target!");
         Destroy(gameObject);
     }
 
     public void Intercept()
     {
-        Debug.Log("Missile intercepted");
+        Debug.LogAssertion("Missile intercepted");
         Destroy(gameObject);
     }
 }
