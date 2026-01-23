@@ -31,13 +31,11 @@ public class MissileSpawnerManager : MonoBehaviour
 
         if (activeSpawners == null || activeSpawners.Length == 0)
         {
-            Debug.LogWarning($"No spawners configured for phase: {newPhase}");
             return;
         }
 
         if (target == null)
         {
-            Debug.LogError("Target is not set in MissileSpawnerManager!");
             return;
         }
 
@@ -48,11 +46,8 @@ public class MissileSpawnerManager : MonoBehaviour
             {
                 spawner.target = target;
                 spawner.StartSpawning();
-                Debug.Log($"Started spawner: {spawner.name} with {spawner.spawnPoints?.Length ?? 0} spawn points");
             }
         }
-
-        Debug.Log($"Phase {newPhase}: Activated {activeSpawners.Length} spawners");
     }
 
     private MissileSpawner[] GetSpawnersForPhase(GamePhase phase)

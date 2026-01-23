@@ -18,37 +18,31 @@ public class InterceptorManager : MonoBehaviour
     {
         if (interceptor == null || !interceptor.ready)
         {
-            Debug.Log("Interceptor not ready or null");
             return;
         }
 
         selectedInterceptor = interceptor;
-        Debug.Log("Selected interceptor: " + interceptor.name);
     }
 
     public void FireAt(Missile missile)
     {
         if (selectedInterceptor == null)
         {
-            Debug.Log("No interceptor selected!");
             return;
         }
 
         if (!selectedInterceptor.ready)
         {
-            Debug.Log("Selected interceptor is on cooldown!");
             return;
         }
 
         if (InterceptorProjectilePrefab == null)
         {
-            Debug.LogError("InterceptorProjectilePrefab is not assigned in InterceptorManager!");
             return;
         }
 
         if (missile == null)
         {
-            Debug.LogError("Target missile is null!");
             return;
         }
 
@@ -61,7 +55,6 @@ public class InterceptorManager : MonoBehaviour
         InterceptorProjectile interceptorProjectile = projectile.GetComponent<InterceptorProjectile>();
         if (interceptorProjectile == null)
         {
-            Debug.LogError("InterceptorProjectilePrefab does not have an InterceptorProjectile component!");
             Destroy(projectile);
             return;
         }
@@ -69,6 +62,5 @@ public class InterceptorManager : MonoBehaviour
         interceptorProjectile.SetTarget(missile);
 
         selectedInterceptor.StartCooldown();
-        Debug.Log($"Fired interceptor at missile: {missile.name}");
     }
 }
