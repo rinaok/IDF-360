@@ -13,13 +13,13 @@ public class GameManager : MonoBehaviour
     
     [Header("Game Timing (Total: 60 seconds)")]
     [Tooltip("Duration for Phase 1: Gaza Only")]
-    public float phase1Duration = 20f;
+    public float phase1Duration = 60f;
     [Tooltip("Duration for Phase 2: Gaza + Lebanon")]
-    public float phase2Duration = 20f;
+    public float phase2Duration = 60f;
      [Tooltip("Duration for Phase 2: Gaza + Lebanon + Yemen")]
-    public float phase3Duration = 20f;
+    public float phase3Duration = 60f;
     [Tooltip("Duration for Phase 3: Final Iran")]
-    public float phase4Duration = 0.1f;
+    public float phase4Duration = 60f;
 
     [Header("Target for Missiles")]
     public Transform target;
