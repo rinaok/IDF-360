@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("Spawner Settings")]
-    public MissileSpawner missileSpawner;
+    public MissileSpawnerManager missileSpawnerManager;
 
     [Header("Game Phase Settings")]
     public GamePhase startingPhase = GamePhase.GazaOnly;
@@ -35,6 +35,13 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         gameStartTime = Time.time;
+        
+        // Set the target in the spawner manager
+        if (missileSpawnerManager != null)
+        {
+            missileSpawnerManager.target = target;
+        }
+        
         SetPhase(startingPhase);
         StartCoroutine(GamePhaseProgression());
     }
@@ -51,10 +58,15 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Starting Phase 2 - Gaza + Lebanon ({phase2Duration}s)");
         yield return new WaitForSeconds(phase2Duration);
 
-        // Phase 3: Final Iran
-        SetPhase(GamePhase.FinalIran);
-        Debug.Log($"Starting Phase 3 - Final Iran ({phase3Duration}s)");
+        // Phase 3: Gaza + Lebanon + Yemen
+        SetPhase(GamePhase.GazaLebanonYemen);
+        Debug.Log($"Starting Phase 3 - Gaza + Lebanon + Yemen ({phase3Duration}s)");
         yield return new WaitForSeconds(phase3Duration);
+
+        // Phase 4: Final Iran
+        SetPhase(GamePhase.FinalIran);
+        Debug.Log($"Starting Phase 4 - Final Iran ({phase4Duration}s)");
+        yield return new WaitForSeconds(phase4Duration);
 
         // Game Over
         float totalTime = Time.time - gameStartTime;
@@ -66,10 +78,9 @@ public class GameManager : MonoBehaviour
     {
         currentPhase = newPhase;
 
-        if (missileSpawner != null)
+        if (missileSpawnerManager != null)
         {
-            missileSpawner.target = target;
-            missileSpawner.UpdatePhase(currentPhase);
+            missileSpawnerManager.UpdatePhase(currentPhase);
         }
     }
 

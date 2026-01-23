@@ -6,44 +6,28 @@ public class MissileSpawner : MonoBehaviour
     public GameObject missilePrefab;
     public Transform[] spawnPoints;
     public Transform target;
+    public float spawnRate = 2f;
 
-    private float spawnRate = 2f;
-    private GamePhase currentPhase;
+    private bool isSpawning = false;
 
-    public void UpdatePhase(GamePhase phase)
+    public void StartSpawning()
     {
-        StopAllCoroutines();
-        currentPhase = phase;
-                
-        switch (phase)
+        if (!isSpawning)
         {
-            case GamePhase.GazaOnly:
-                spawnRate = 2f; // Spawn every 2 seconds (easier)
-                Debug.Log("Gaza Only - Spawn rate: 2s");
-                break;
-
-            case GamePhase.GazaLebanon:
-                spawnRate = 1.3f; // Spawn every 1.3 seconds (medium)
-                Debug.Log("Gaza + Lebanon - Spawn rate: 1.3s");
-                break;
-
-            case GamePhase.GazaLebanonYemen:
-                spawnRate = 0.8f; // Spawn every 0.8 seconds (intense)
-                Debug.Log("Gaza + Lebanon + Yemen - Spawn rate: 0.8s");
-                break;
-
-            case GamePhase.FinalIran:
-                spawnRate = 0.8f; // Spawn every 0.8 seconds (intense)
-                Debug.Log("Final Phase + Iran - Spawn rate: 0.8s");
-                break;
+            isSpawning = true;
+            StartCoroutine(SpawnLoop());
         }
+    }
 
-        StartCoroutine(SpawnLoop());
+    public void StopSpawning()
+    {
+        isSpawning = false;
+        StopAllCoroutines();
     }
 
     IEnumerator SpawnLoop()
     {
-        while (true)
+        while (isSpawning)
         {
             SpawnMissile();
             yield return new WaitForSeconds(spawnRate);
