@@ -40,14 +40,35 @@ public class InterceptorManager : MonoBehaviour
             return;
         }
 
+        if (InterceptorProjectilePrefab == null)
+        {
+            Debug.LogError("InterceptorProjectilePrefab is not assigned in InterceptorManager!");
+            return;
+        }
+
+        if (missile == null)
+        {
+            Debug.LogError("Target missile is null!");
+            return;
+        }
+
         GameObject projectile = Instantiate(
             InterceptorProjectilePrefab,
             selectedInterceptor.transform.position,
             Quaternion.identity
         );
 
-        projectile.GetComponent<InterceptorProjectile>().SetTarget(missile);
+        InterceptorProjectile interceptorProjectile = projectile.GetComponent<InterceptorProjectile>();
+        if (interceptorProjectile == null)
+        {
+            Debug.LogError("InterceptorProjectilePrefab does not have an InterceptorProjectile component!");
+            Destroy(projectile);
+            return;
+        }
+
+        interceptorProjectile.SetTarget(missile);
 
         selectedInterceptor.StartCooldown();
+        Debug.Log($"Fired interceptor at missile: {missile.name}");
     }
 }
