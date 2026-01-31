@@ -11,18 +11,15 @@ public class GameManager : MonoBehaviour
     [Header("Game Phase Settings")]
     public GamePhase startingPhase = GamePhase.GazaOnly;
     
-    [Header("Game Timing (Total: 60 seconds)")]
-    [Tooltip("Duration for Phase 1: Gaza Only")]
+    [Header("Game Timing")]
+    [Tooltip("Duration for Phase 1: Gaza Only (0-1 minute)")]
     public float phase1Duration = 60f;
-    [Tooltip("Duration for Phase 2: Gaza + Lebanon")]
+    [Tooltip("Duration for Phase 2: Gaza + Lebanon (1-2 minutes)")]
     public float phase2Duration = 60f;
-     [Tooltip("Duration for Phase 2: Gaza + Lebanon + Yemen")]
-    public float phase3Duration = 60f;
-    [Tooltip("Duration for Phase 3: Final Iran")]
+     [Tooltip("Duration for Phase 3: Gaza + Lebanon + Yemen (2-4 minutes)")]
+    public float phase3Duration = 120f;
+    [Tooltip("Duration for Phase 4: Final Iran (4+ minutes)")]
     public float phase4Duration = 60f;
-
-    [Header("Target for Missiles")]
-    public Transform target;
 
     private GamePhase currentPhase;
     private float gameStartTime;
@@ -35,13 +32,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         gameStartTime = Time.time;
-        
-        // Set the target in the spawner manager
-        if (missileSpawnerManager != null)
-        {
-            missileSpawnerManager.target = target;
-        }
-        
         SetPhase(startingPhase);
         StartCoroutine(GamePhaseProgression());
     }

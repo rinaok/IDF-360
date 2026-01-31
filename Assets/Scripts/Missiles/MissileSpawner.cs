@@ -5,10 +5,11 @@ public class MissileSpawner : MonoBehaviour
 {
     public GameObject missilePrefab;
     public Transform[] spawnPoints;
-    public Transform target;
+    public Transform[] targets;
     public float spawnRate = 2f;
 
     private bool isSpawning = false;
+    private Missile activeMissile;
 
     public void StartSpawning()
     {
@@ -29,29 +30,41 @@ public class MissileSpawner : MonoBehaviour
     {
         while (isSpawning)
         {
-            SpawnMissile();
+            // Only spawn if there's no active missile
+            if (activeMissile == null)
+            {
+                SpawnMissile();
+            }
+            
             yield return new WaitForSeconds(spawnRate);
         }
     }
 
     void SpawnMissile()
     {
-        if (spawnPoints == null || spawnPoints.Length == 0 || target == null)
+        if (spawnPoints == null || spawnPoints.Length == 0 || targets == null || targets.Length == 0)
         {
-            Debug.LogError("MissileSpawner not configured properly");
+            Debug.LogError("MissileSpawner not configured properly - missing spawn points or targets");
             return;
         }
 
-        Transform spawnPoint =
-            spawnPoints[Random.Range(0, spawnPoints.Length)];
+        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        Transform target = targets[Random.Range(0, targets.Length)];
+
+        // Calculate direction to target for initial rotation
+        Vector3 direction = (target.position - spawnPoint.position).normalized;
+        Quaternion rotation = Quaternion.LookRotation(direction);
 
         GameObject missileObj = Instantiate(
             missilePrefab,
             spawnPoint.position,
-            Quaternion.identity
+            rotation
         );
 
         Missile missile = missileObj.GetComponent<Missile>();
         missile.target = target;
+        
+        // Track this as the active missile
+        activeMissile = missile;
     }
 }

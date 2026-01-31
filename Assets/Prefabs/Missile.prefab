@@ -103,5 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Missile
   target: {fileID: 0}
-  flightDuration: 4
+  flightDuration: 7
   arcHeight: 5
+  modelRotationOffset: -90
+  explosionPrefab: {fileID: 100006, guid: 7c442b9b6852b8a4f93306f3d154d471, type: 3}

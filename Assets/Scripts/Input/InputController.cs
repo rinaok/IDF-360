@@ -24,11 +24,28 @@ public class InputController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            Missile missile = hit.collider.GetComponent<Missile>();
-            if (missile != null)
+            Debug.Log($"Clicked on: {hit.collider.gameObject.name}");
+            
+            // Only select interceptor on click
+            Interceptor interceptor = hit.collider.GetComponent<Interceptor>();
+            if (interceptor != null)
             {
-                InterceptorManager.Instance.FireAt(missile);
+                if (InterceptorManager.Instance != null)
+                {
+                    InterceptorManager.Instance.SelectInterceptor(interceptor);
+                }
+                else
+                {
+                    Debug.LogError("InterceptorManager.Instance is null!");
+                }
+                return;
             }
+        }
+
+        // If an interceptor is selected, fire forward on any click (not on interceptor)
+        if (InterceptorManager.Instance != null && InterceptorManager.Instance.HasSelectedInterceptor())
+        {
+            InterceptorManager.Instance.FireForward();
         }
     }
 }

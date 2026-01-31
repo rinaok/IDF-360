@@ -13,8 +13,8 @@ public class MissileSpawnerManager : MonoBehaviour
     [Tooltip("Configure which spawners are active for each game phase")]
     public PhaseSpawnerGroup[] phaseSpawnerGroups;
 
-    [Header("Target")]
-    public Transform target;
+    [Header("Targets")]
+    public Transform[] targets;
 
     private GamePhase currentPhase;
     private MissileSpawner[] activeSpawners;
@@ -34,18 +34,20 @@ public class MissileSpawnerManager : MonoBehaviour
             return;
         }
 
-        if (target == null)
+        if (targets == null || targets.Length == 0)
         {
+            Debug.LogError("No targets set in MissileSpawnerManager!");
             return;
         }
 
-        // Set target and start spawning for all spawners in this phase
+        // Set targets and start spawning for all spawners in this phase
         foreach (MissileSpawner spawner in activeSpawners)
         {
             if (spawner != null)
             {
-                spawner.target = target;
+                spawner.targets = targets;
                 spawner.StartSpawning();
+                Debug.Log($"Started spawner: {spawner.name} with {spawner.spawnPoints?.Length ?? 0} spawn points and {targets.Length} targets");
             }
         }
     }

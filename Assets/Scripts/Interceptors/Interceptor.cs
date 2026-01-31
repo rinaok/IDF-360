@@ -4,6 +4,8 @@ public class Interceptor : MonoBehaviour
 {
     public bool ready = true;
     public float cooldown = 1f;
+    [Tooltip("Rotation offset if the model faces the wrong direction (0=correct, 180=backwards, 90/-90=sideways)")]
+    public float modelRotationOffset = 0f;
 
     private void OnMouseDown()
     {
