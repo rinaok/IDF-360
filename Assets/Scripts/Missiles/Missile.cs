@@ -49,8 +49,6 @@ public class Missile : MonoBehaviour
 
     void HitTarget()
     {
-        Debug.LogError("Missile hit target!");
-        
         // Spawn explosion at ground hit position
         if (explosionPrefab != null && target != null)
         {
@@ -62,8 +60,6 @@ public class Missile : MonoBehaviour
 
     public void Intercept()
     {
-        Debug.LogAssertion("Missile intercepted");
-        
         // Spawn explosion at intercept position
         if (explosionPrefab != null)
         {

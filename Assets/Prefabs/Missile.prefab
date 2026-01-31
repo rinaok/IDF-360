@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5893159301049439279}
   - component: {fileID: 7028956447122361920}
   - component: {fileID: 8993355206091860524}
+  - component: {fileID: -1885909898178775128}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Untagged
@@ -107,3 +108,24 @@ MonoBehaviour:
   arcHeight: 5
   modelRotationOffset: -90
   explosionPrefab: {fileID: 100006, guid: 7c442b9b6852b8a4f93306f3d154d471, type: 3}
+--- !u!65 &-1885909898178775128
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3111377081912060477}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.018995008, y: 0.0033211904, z: 0.0033175303}
+  m_Center: {x: 0.00000896491, y: 0.000009184995, z: -0.000011735074}

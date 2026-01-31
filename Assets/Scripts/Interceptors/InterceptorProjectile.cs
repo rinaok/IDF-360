@@ -6,8 +6,6 @@ public class InterceptorProjectile : MonoBehaviour
     public float speed = 15f;
     private Rigidbody rb;
 
-    public GameObject explosionPrefab;
-
     public Vector3 initialDirection;
 
     [Tooltip("Rotation offset if the model faces the wrong direction (0=correct, 180=backwards, 90/-90=sideways)")]
@@ -34,8 +32,19 @@ public class InterceptorProjectile : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        // Always maintain velocity in the initial direction
-        rb.linearVelocity = initialDirection.normalized * speed;
+
+        if (target != null)
+        {
+            // Homing: move toward the target
+            Vector3 toTarget = (target.transform.position - rb.position).normalized;
+            rb.linearVelocity = toTarget * speed;
+        }
+        else
+        {
+            // No target, just move straight
+            rb.linearVelocity = initialDirection.normalized * speed;
+        }
+
         // Rotate to face movement direction
         if (rb.linearVelocity != Vector3.zero)
         {
@@ -48,10 +57,6 @@ public class InterceptorProjectile : MonoBehaviour
         Missile missile = other.GetComponent<Missile>();
         if (missile != null)
         {
-            if (explosionPrefab != null)
-            {
-                Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            }
             missile.Intercept();
             Destroy(gameObject);
         }
@@ -60,5 +65,10 @@ public class InterceptorProjectile : MonoBehaviour
     void OnBecameInvisible()
     {
         Destroy(gameObject);
+    }
+
+    public void SetTarget(Missile missile)
+    {
+        target = missile;
     }
 }

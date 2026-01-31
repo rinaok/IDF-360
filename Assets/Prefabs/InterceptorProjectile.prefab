@@ -105,7 +105,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterceptorProjectile
   speed: 10
-  explosionPrefab: {fileID: 100006, guid: e4704660d196fac40802911e12ac76f1, type: 3}
+  initialDirection: {x: 0, y: 0, z: 0}
+  modelRotationOffset: 0
 --- !u!54 &-6347032834623756870
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,7 +149,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

@@ -24,8 +24,6 @@ public class InputController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            Debug.Log($"Clicked on: {hit.collider.gameObject.name}");
-            
             // Only select interceptor on click
             Interceptor interceptor = hit.collider.GetComponent<Interceptor>();
             if (interceptor != null)
@@ -42,10 +40,14 @@ public class InputController : MonoBehaviour
             }
         }
 
-        // If an interceptor is selected, fire forward on any click (not on interceptor)
+        // If an interceptor is selected, fire at nearest missile on any click (not on interceptor)
         if (InterceptorManager.Instance != null && InterceptorManager.Instance.HasSelectedInterceptor())
         {
-            InterceptorManager.Instance.FireForward();
+            Missile nearestMissile = InterceptorManager.Instance.FindNearestMissile();
+            if (nearestMissile != null)
+            {
+                InterceptorManager.Instance.FireAt(nearestMissile);
+            }
         }
     }
 }

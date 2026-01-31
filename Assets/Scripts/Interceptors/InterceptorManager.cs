@@ -15,9 +15,6 @@ public class InterceptorManager : MonoBehaviour
     public float rotationSpeed = 5f;
     public LayerMask groundLayer;
 
-    [Header("Fire Settings")]
-    public float fireAngle = 45f; // Angle in degrees above the forward direction
-
     private Interceptor selectedInterceptor;
     private Outline currentOutline;
     private Camera mainCamera;
@@ -124,8 +121,6 @@ public class InterceptorManager : MonoBehaviour
             currentOutline.OutlineWidth = outlineWidth;
             currentOutline.enabled = true;
         }
-
-        Debug.Log($"Selected interceptor: {interceptor.name}");
     }
 
     public void FireAt(Missile missile)
@@ -154,9 +149,11 @@ public class InterceptorManager : MonoBehaviour
             return;
         }
 
+        // Raise the projectile spawn position by 2 units (adjust as needed)
+        Vector3 spawnPos = selectedInterceptor.transform.position + Vector3.up * 2f;
         GameObject projectile = Instantiate(
             InterceptorProjectilePrefab,
-            selectedInterceptor.transform.position,
+            spawnPos,
             selectedInterceptor.transform.rotation
         );
 
@@ -168,13 +165,11 @@ public class InterceptorManager : MonoBehaviour
             return;
         }
 
-        // Set initial direction for projectile
-        Vector3 forward = selectedInterceptor.transform.forward;
-        Vector3 angledDirection = Quaternion.AngleAxis(fireAngle, selectedInterceptor.transform.right) * forward;
-        interceptorProjectile.initialDirection = angledDirection;
+        // Set target for homing
+        interceptorProjectile.SetTarget(missile);
+        interceptorProjectile.initialDirection = selectedInterceptor.transform.forward;
 
         selectedInterceptor.StartCooldown();
-        Debug.Log($"Fired interceptor at missile: {missile.name}");
     }
 
     public bool HasSelectedInterceptor()
@@ -182,44 +177,25 @@ public class InterceptorManager : MonoBehaviour
         return selectedInterceptor != null && selectedInterceptor.ready;
     }
 
-    public void FireForward()
+    public Missile FindNearestMissile()
     {
-        if (selectedInterceptor == null)
-        {
-            Debug.LogWarning("Cannot fire - No interceptor selected!");
-            return;
-        }
-        if (!selectedInterceptor.ready)
-        {
-            Debug.LogWarning("Cannot fire - Selected interceptor is on cooldown!");
-            return;
-        }
-        if (InterceptorProjectilePrefab == null)
-        {
-            Debug.LogError("Cannot fire - InterceptorProjectilePrefab is not assigned!");
-            return;
-        }
+        if (selectedInterceptor == null) return null;
 
-        GameObject projectile = Instantiate(
-            InterceptorProjectilePrefab,
-            selectedInterceptor.transform.position,
-            selectedInterceptor.transform.rotation
-        );
+        Missile[] missiles = FindObjectsByType<Missile>(FindObjectsSortMode.None);
+        Missile nearest = null;
+        float minDistance = Mathf.Infinity;
 
-        InterceptorProjectile interceptorProjectile = projectile.GetComponent<InterceptorProjectile>();
-        if (interceptorProjectile == null)
+        foreach (Missile missile in missiles)
         {
-            Debug.LogError("InterceptorProjectilePrefab does not have an InterceptorProjectile component!");
-            Destroy(projectile);
-            return;
+            if (missile == null) continue;
+            float distance = Vector3.Distance(selectedInterceptor.transform.position, missile.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearest = missile;
+            }
         }
 
-        // Set initial direction for projectile
-        Vector3 forward = selectedInterceptor.transform.forward;
-        Vector3 angledDirection = Quaternion.AngleAxis(fireAngle, selectedInterceptor.transform.right) * forward;
-        interceptorProjectile.initialDirection = angledDirection;
-
-        selectedInterceptor.StartCooldown();
-        Debug.Log($"Fired interceptor FORWARD from: {selectedInterceptor.name}");
+        return nearest;
     }
 }
