@@ -107,6 +107,11 @@ MonoBehaviour:
   speed: 10
   initialDirection: {x: 0, y: 0, z: 0}
   modelRotationOffset: 0
+  gravityMultiplier: 2
+  explosionPrefab: {fileID: 100004, guid: b46890100828db6429ff69c322b45893, type: 3}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!54 &-6347032834623756870
 Rigidbody:
   m_ObjectHideFlags: 0

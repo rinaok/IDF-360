@@ -6,6 +6,10 @@ public class Interceptor : MonoBehaviour
     public float cooldown = 1f;
     [Tooltip("Rotation offset if the model faces the wrong direction (0=correct, 180=backwards, 90/-90=sideways)")]
     public float modelRotationOffset = 0f;
+    
+    [Header("Range Settings")]
+    [Tooltip("Maximum range the projectile can travel before falling")]
+    public float range = 50f;
 
     private void OnMouseDown()
     {

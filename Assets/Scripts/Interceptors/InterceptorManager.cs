@@ -15,6 +15,11 @@ public class InterceptorManager : MonoBehaviour
     public float rotationSpeed = 5f;
     public LayerMask groundLayer;
 
+    [Header("Range Indicator")]
+    public Color rangeIndicatorColor = new Color(0f, 1f, 0f, 0.3f);
+    public int rangeIndicatorSegments = 64;
+    private LineRenderer rangeIndicator;
+
     private Interceptor selectedInterceptor;
     private Outline currentOutline;
     private Camera mainCamera;
@@ -23,6 +28,25 @@ public class InterceptorManager : MonoBehaviour
     {
         Instance = this;
         mainCamera = Camera.main;
+        CreateRangeIndicator();
+    }
+
+    void CreateRangeIndicator()
+    {
+        GameObject indicatorObj = new GameObject("RangeIndicator");
+        indicatorObj.transform.SetParent(transform);
+        rangeIndicator = indicatorObj.AddComponent<LineRenderer>();
+        rangeIndicator.useWorldSpace = true;
+        rangeIndicator.loop = true;
+        rangeIndicator.positionCount = rangeIndicatorSegments;
+        rangeIndicator.startWidth = 0.2f;
+        rangeIndicator.endWidth = 0.2f;
+        
+        // Create a simple material
+        rangeIndicator.material = new Material(Shader.Find("Sprites/Default"));
+        rangeIndicator.startColor = rangeIndicatorColor;
+        rangeIndicator.endColor = rangeIndicatorColor;
+        rangeIndicator.enabled = false;
     }
 
     private void Update()
@@ -30,6 +54,24 @@ public class InterceptorManager : MonoBehaviour
         if (selectedInterceptor != null)
         {
             RotateInterceptorTowardsMouse();
+            UpdateRangeIndicator();
+        }
+    }
+
+    void UpdateRangeIndicator()
+    {
+        if (rangeIndicator == null || selectedInterceptor == null) return;
+
+        rangeIndicator.enabled = true;
+        Vector3 center = selectedInterceptor.transform.position;
+        float radius = selectedInterceptor.range;
+
+        for (int i = 0; i < rangeIndicatorSegments; i++)
+        {
+            float angle = (float)i / rangeIndicatorSegments * 360f * Mathf.Deg2Rad;
+            float x = center.x + Mathf.Cos(angle) * radius;
+            float z = center.z + Mathf.Sin(angle) * radius;
+            rangeIndicator.SetPosition(i, new Vector3(x, center.y + 0.1f, z));
         }
     }
 
@@ -93,6 +135,12 @@ public class InterceptorManager : MonoBehaviour
         if (currentOutline != null)
         {
             currentOutline.enabled = false;
+        }
+
+        // Hide previous range indicator if switching interceptors
+        if (rangeIndicator != null && selectedInterceptor != interceptor)
+        {
+            rangeIndicator.enabled = false;
         }
 
         selectedInterceptor = interceptor;
@@ -165,8 +213,9 @@ public class InterceptorManager : MonoBehaviour
             return;
         }
 
-        // Set target for homing
+        // Set target for homing and range limit
         interceptorProjectile.SetTarget(missile);
+        interceptorProjectile.SetRange(selectedInterceptor.range);
         interceptorProjectile.initialDirection = selectedInterceptor.transform.forward;
 
         selectedInterceptor.StartCooldown();
