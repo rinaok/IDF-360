@@ -1,9 +1,9 @@
 public enum GamePhase
 {
-    GazaOnly,
-    GazaLebanon,
-    GazaLebanonYemen,
-    FinalIran
+    Gaza,
+    Lebanon,
+    Yemen,
+    Iran
 }
 
 public enum MissileSource

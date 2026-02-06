@@ -108,6 +108,8 @@ MonoBehaviour:
   arcHeight: 5
   modelRotationOffset: -90
   explosionPrefab: {fileID: 100006, guid: 7c442b9b6852b8a4f93306f3d154d471, type: 3}
+  hitSound: {fileID: 8300000, guid: 0f11d606341d1404fa631e76562d1650, type: 3}
+  missSound: {fileID: 8300000, guid: 54d8f8e26941e46bc8dd08a4122de47d, type: 3}
 --- !u!65 &-1885909898178775128
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -7,6 +7,8 @@ public class MissileSpawner : MonoBehaviour
     public Transform[] spawnPoints;
     public Transform[] targets;
     public float spawnRate = 2f;
+    [Header("Effects")]
+    public GameObject flashPrefab;
 
     private bool isSpawning = false;
     private Missile activeMissile;
@@ -63,6 +65,18 @@ public class MissileSpawner : MonoBehaviour
 
         Missile missile = missileObj.GetComponent<Missile>();
         missile.target = target;
+        
+        // Spawn flash effect at spawner location
+        if (flashPrefab != null)
+        {
+            Instantiate(flashPrefab, spawnPoint.position, Quaternion.identity);
+        }
+
+        // Track strike
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.IncrementStrikeCount();
+        }
         
         // Track this as the active missile
         activeMissile = missile;

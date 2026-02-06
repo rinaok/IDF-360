@@ -47,7 +47,6 @@ public class MissileSpawnerManager : MonoBehaviour
             {
                 spawner.targets = targets;
                 spawner.StartSpawning();
-                Debug.Log($"Started spawner: {spawner.name} with {spawner.spawnPoints?.Length ?? 0} spawn points and {targets.Length} targets");
             }
         }
     }
@@ -76,6 +75,11 @@ public class MissileSpawnerManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void StopAllSpawners()
+    {
+        StopCurrentSpawners();
     }
 
     private void OnDestroy()

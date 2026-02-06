@@ -13,6 +13,10 @@ public class Missile : MonoBehaviour
     [Header("Effects")]
     public GameObject explosionPrefab;
 
+    [Header("Audio")]
+    public AudioClip hitSound;
+    public AudioClip missSound;
+
     private Vector3 startPos;
     private float timer;
 
@@ -54,6 +58,18 @@ public class Missile : MonoBehaviour
         {
             Instantiate(explosionPrefab, target.position, Quaternion.identity);
         }
+
+        // Play miss sound (missile reached target, wasn't intercepted)
+        if (missSound != null)
+        {
+            AudioSource.PlayClipAtPoint(missSound, transform.position, 1.5f);
+        }
+        
+        // Notify GameManager that missile is destroyed
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnMissileDestroyed();
+        }
         
         Destroy(gameObject);
     }
@@ -64,6 +80,18 @@ public class Missile : MonoBehaviour
         if (explosionPrefab != null)
         {
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        }
+
+        // Play hit sound (missile was intercepted)
+        if (hitSound != null)
+        {
+            AudioSource.PlayClipAtPoint(hitSound, transform.position, 1.5f);
+        }
+        
+        // Notify GameManager that missile is destroyed
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnMissileDestroyed();
         }
         
         Destroy(gameObject);

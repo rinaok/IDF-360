@@ -9,59 +9,91 @@ public class GameManager : MonoBehaviour
     public MissileSpawnerManager missileSpawnerManager;
 
     [Header("Game Phase Settings")]
-    public GamePhase startingPhase = GamePhase.GazaOnly;
+    public GamePhase startingPhase = GamePhase.Gaza;
     
     [Header("Game Timing")]
-    [Tooltip("Duration for Phase 1: Gaza Only (0-1 minute)")]
-    public float phase1Duration = 60f;
-    [Tooltip("Duration for Phase 2: Gaza + Lebanon (1-2 minutes)")]
-    public float phase2Duration = 60f;
-     [Tooltip("Duration for Phase 3: Gaza + Lebanon + Yemen (2-4 minutes)")]
-    public float phase3Duration = 120f;
-    [Tooltip("Duration for Phase 4: Final Iran (4+ minutes)")]
-    public float phase4Duration = 60f;
+    public float phase1Duration = 15f;
+    public float phase2Duration = 15f;
+    public float phase3Duration = 15f;
+    public float phase4Duration = 15f;
+
+    [Header("Audio")]
+    public AudioClip backgroundMusic;
+    private AudioSource audioSource;
 
     private GamePhase currentPhase;
     private float gameStartTime;
+    private bool gameStarted = false;
+    private int totalStrikes = 0;
+    private int activeMissileCount = 0;
+    private bool lastPhaseStarted = false;
 
     private void Awake()
     {
         Instance = this;
+        
+        // Setup audio source
+        audioSource = gameObject.GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+        
+        audioSource.loop = true;
+        audioSource.playOnAwake = false;
+        audioSource.volume = 0.3f; // Set background music to be quieter
+    }
+
+    public void IncrementStrikeCount()
+    {
+        totalStrikes++;
+        activeMissileCount++;
+    }
+
+    public void OnMissileDestroyed()
+    {
+        activeMissileCount--;
+        
+        // Check if game should end (last phase and no missiles left)
+        if (lastPhaseStarted && activeMissileCount <= 0)
+        {
+            OnGameComplete();
+        }
     }
 
     private void Start()
     {
+        // Start background music immediately
+        if (backgroundMusic != null && audioSource != null)
+        {
+            audioSource.clip = backgroundMusic;
+            audioSource.Play();
+        }
+    }
+
+    public void StartGame()
+    {
+        if (gameStarted) return;
+        
+        gameStarted = true;
         gameStartTime = Time.time;
+        
         SetPhase(startingPhase);
         StartCoroutine(GamePhaseProgression());
     }
 
     private IEnumerator GamePhaseProgression()
     {
-        // Phase 1: Gaza Only
-        SetPhase(GamePhase.GazaOnly);
-        Debug.Log($"Starting Phase 1 - Gaza Only ({phase1Duration}s)");
+        SetPhase(GamePhase.Gaza);
         yield return new WaitForSeconds(phase1Duration);
 
-        // Phase 2: Gaza + Lebanon
-        SetPhase(GamePhase.GazaLebanon);
-        Debug.Log($"Starting Phase 2 - Gaza + Lebanon ({phase2Duration}s)");
+        SetPhase(GamePhase.Lebanon);
         yield return new WaitForSeconds(phase2Duration);
 
-        // Phase 3: Gaza + Lebanon + Yemen
-        SetPhase(GamePhase.GazaLebanonYemen);
-        Debug.Log($"Starting Phase 3 - Gaza + Lebanon + Yemen ({phase3Duration}s)");
+        SetPhase(GamePhase.Yemen);
         yield return new WaitForSeconds(phase3Duration);
 
-        // Phase 4: Final Iran
-        SetPhase(GamePhase.FinalIran);
-        Debug.Log($"Starting Phase 4 - Final Iran ({phase4Duration}s)");
-        yield return new WaitForSeconds(phase4Duration);
-
-        // Game Over
-        float totalTime = Time.time - gameStartTime;
-        Debug.Log($"Game Complete! Total time: {totalTime:F1} seconds");
-        OnGameComplete();
+        SetPhase(GamePhase.Iran);
+        lastPhaseStarted = true;
+        // Don't wait for time - game will end when last missile hits/misses
     }
 
     public void SetPhase(GamePhase newPhase)
@@ -76,8 +108,23 @@ public class GameManager : MonoBehaviour
 
     private void OnGameComplete()
     {
-        Debug.Log("Game Over - All phases completed!");
-        // You can add end game logic here
+        // Stop all spawners
+        if (missileSpawnerManager != null)
+        {
+            missileSpawnerManager.StopAllSpawners();
+        }
+
+        // Reset game state
+        gameStarted = false;
+        lastPhaseStarted = false;
+        activeMissileCount = 0;
+
+        // Show start button with "Play Again" text
+        StartButtonController startButtonController = FindFirstObjectByType<StartButtonController>();
+        if (startButtonController != null)
+        {
+            startButtonController.ShowAsPlayAgain();
+        }
     }
 
     public GamePhase GetCurrentPhase()

@@ -32,10 +32,6 @@ public class InputController : MonoBehaviour
                 {
                     InterceptorManager.Instance.SelectInterceptor(interceptor);
                 }
-                else
-                {
-                    Debug.LogError("InterceptorManager.Instance is null!");
-                }
                 return;
             }
         }
