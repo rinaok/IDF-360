@@ -1137,7 +1137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interceptor
   ready: 1
-  cooldown: 1
+  cooldown: 5
   modelRotationOffset: 180
   range: 2
 --- !u!1 &873442267
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interceptor
   ready: 1
-  cooldown: 1
+  cooldown: 20
   modelRotationOffset: 0
   range: 4
 --- !u!65 &911587013
@@ -1309,7 +1309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interceptor
   ready: 1
-  cooldown: 1
+  cooldown: 5
   modelRotationOffset: 180
   range: 2
 --- !u!65 &927679919
@@ -1787,7 +1787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterceptorManager
   InterceptorProjectilePrefab: {fileID: 2398144666967058375, guid: eaae99331ea874ffe8039baf23f2d1db, type: 3}
-  outlineColor: {r: 0.9528302, g: 0.013483452, b: 0.013483422, a: 1}
+  outlineColor: {r: 0.054246064, g: 0.9529412, b: 0.011764699, a: 1}
   outlineWidth: 5
   rotationSpeed: 5
   groundLayer:
@@ -2014,7 +2014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interceptor
   ready: 1
-  cooldown: 1
+  cooldown: 10
   modelRotationOffset: 180
   range: 3
 --- !u!65 &1661276640
@@ -2312,7 +2312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interceptor
   ready: 1
-  cooldown: 1
+  cooldown: 5
   modelRotationOffset: 180
   range: 2
 --- !u!1001 &2098764075
@@ -2405,7 +2405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interceptor
   ready: 1
-  cooldown: 1
+  cooldown: 10
   modelRotationOffset: 180
   range: 3
 --- !u!65 &2098764079

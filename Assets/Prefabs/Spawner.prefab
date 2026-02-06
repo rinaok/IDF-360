@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3839558981968449898}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 0}
 --- !u!23 &7252630765037019459
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -127,4 +127,5 @@ MonoBehaviour:
   missilePrefab: {fileID: 3111377081912060477, guid: 3714b9123cc3642199f03ca865456823, type: 3}
   spawnPoints:
   - {fileID: 0}
-  target: {fileID: 0}
+  targets: []
+  spawnRate: 2

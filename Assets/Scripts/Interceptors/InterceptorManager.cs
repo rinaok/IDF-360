@@ -20,8 +20,12 @@ public class InterceptorManager : MonoBehaviour
     public int rangeIndicatorSegments = 64;
     private LineRenderer rangeIndicator;
 
-    private Interceptor selectedInterceptor;
-    private Outline currentOutline;
+    private Interceptor _selectedInterceptor;
+    public Interceptor selectedInterceptor
+    {
+        get { return _selectedInterceptor; }
+        set { _selectedInterceptor = value; }
+    }
     private Camera mainCamera;
 
     private void Awake()
@@ -126,15 +130,9 @@ public class InterceptorManager : MonoBehaviour
 
     public void SelectInterceptor(Interceptor interceptor)
     {
-        if (interceptor == null || !interceptor.ready)
+        if (interceptor == null)
         {
             return;
-        }
-
-        // Remove outline from previously selected interceptor
-        if (currentOutline != null)
-        {
-            currentOutline.enabled = false;
         }
 
         // Hide previous range indicator if switching interceptors
@@ -144,31 +142,7 @@ public class InterceptorManager : MonoBehaviour
         }
 
         selectedInterceptor = interceptor;
-
-        // Add or enable outline on newly selected interceptor
-        currentOutline = interceptor.GetComponent<Outline>();
-        if (currentOutline == null)
-        {
-            try
-            {
-                currentOutline = interceptor.gameObject.AddComponent<Outline>();
-                currentOutline.OutlineColor = outlineColor;
-                currentOutline.OutlineWidth = outlineWidth;
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogWarning($"Could not add Outline to {interceptor.name}. " +
-                    "Enable Read/Write in mesh import settings: " +
-                    "Select the model in Project window > Inspector > Read/Write Enabled checkbox.\n" +
-                    $"Error: {e.Message}");
-            }
-        }
-        else
-        {
-            currentOutline.OutlineColor = outlineColor;
-            currentOutline.OutlineWidth = outlineWidth;
-            currentOutline.enabled = true;
-        }
+        // Interceptor now manages its own outline color
     }
 
     public void FireAt(Missile missile)
@@ -224,6 +198,11 @@ public class InterceptorManager : MonoBehaviour
     public bool HasSelectedInterceptor()
     {
         return selectedInterceptor != null && selectedInterceptor.ready;
+    }
+
+    public bool IsInterceptorSelected(Interceptor interceptor)
+    {
+        return selectedInterceptor == interceptor;
     }
 
     public Missile FindNearestMissile()
