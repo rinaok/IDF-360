@@ -97,19 +97,21 @@ public class InterceptorManager : MonoBehaviour
     {
         if (allInterceptors == null || allInterceptors.Length == 0) return;
         
-        // Arrow key navigation
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-        {
-            currentInterceptorIndex--;
-            if (currentInterceptorIndex < 0)
-                currentInterceptorIndex = allInterceptors.Length - 1;
-            SelectInterceptor(allInterceptors[currentInterceptorIndex]);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        // Arrow key navigation (up/left = next, down/right = previous)
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || 
+            Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.W))
         {
             currentInterceptorIndex++;
             if (currentInterceptorIndex >= allInterceptors.Length)
                 currentInterceptorIndex = 0;
+            SelectInterceptor(allInterceptors[currentInterceptorIndex]);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.DownArrow) || 
+                 Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S))
+        {
+            currentInterceptorIndex--;
+            if (currentInterceptorIndex < 0)
+                currentInterceptorIndex = allInterceptors.Length - 1;
             SelectInterceptor(allInterceptors[currentInterceptorIndex]);
         }
         
