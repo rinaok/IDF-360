@@ -62,7 +62,7 @@ public class Missile : MonoBehaviour
         // Play miss sound (missile reached target, wasn't intercepted)
         if (missSound != null)
         {
-            AudioSource.PlayClipAtPoint(missSound, transform.position, 1.5f);
+            AudioSource.PlayClipAtPoint(missSound, transform.position, 4.0f);
         }
         
         // Notify GameManager that missile is destroyed
@@ -85,7 +85,7 @@ public class Missile : MonoBehaviour
         // Play hit sound (missile was intercepted)
         if (hitSound != null)
         {
-            AudioSource.PlayClipAtPoint(hitSound, transform.position, 1.5f);
+            AudioSource.PlayClipAtPoint(hitSound, transform.position, 4.0f);
         }
         
         // Notify GameManager that missile is destroyed

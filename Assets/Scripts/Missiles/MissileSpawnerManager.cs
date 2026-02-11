@@ -21,6 +21,13 @@ public class MissileSpawnerManager : MonoBehaviour
 
     public void UpdatePhase(GamePhase newPhase)
     {
+        // Validate targets are assigned
+        if (targets == null || targets.Length == 0)
+        {
+            Debug.LogError("[MissileSpawnerManager] No targets assigned! Please assign targets in the Inspector.");
+            return;
+        }
+
         // Stop all currently active spawners
         StopCurrentSpawners();
 
@@ -31,12 +38,7 @@ public class MissileSpawnerManager : MonoBehaviour
 
         if (activeSpawners == null || activeSpawners.Length == 0)
         {
-            return;
-        }
-
-        if (targets == null || targets.Length == 0)
-        {
-            Debug.LogError("No targets set in MissileSpawnerManager!");
+            Debug.LogWarning($"[MissileSpawnerManager] No spawners configured for phase: {newPhase}");
             return;
         }
 

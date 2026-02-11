@@ -44,14 +44,32 @@ public class MissileSpawner : MonoBehaviour
 
     void SpawnMissile()
     {
-        if (spawnPoints == null || spawnPoints.Length == 0 || targets == null || targets.Length == 0)
+        if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            Debug.LogError("MissileSpawner not configured properly - missing spawn points or targets");
+            Debug.LogError($"[MissileSpawner - {gameObject.name}] No spawn points assigned!");
+            return;
+        }
+
+        if (targets == null || targets.Length == 0)
+        {
+            Debug.LogError($"[MissileSpawner - {gameObject.name}] No targets assigned! This should be set by MissileSpawnerManager.");
+            return;
+        }
+
+        if (missilePrefab == null)
+        {
+            Debug.LogError($"[MissileSpawner - {gameObject.name}] No missile prefab assigned!");
             return;
         }
 
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
         Transform target = targets[Random.Range(0, targets.Length)];
+
+        if (spawnPoint == null || target == null)
+        {
+            Debug.LogError($"[MissileSpawner - {gameObject.name}] Spawn point or target is null!");
+            return;
+        }
 
         // Calculate direction to target for initial rotation
         Vector3 direction = (target.position - spawnPoint.position).normalized;

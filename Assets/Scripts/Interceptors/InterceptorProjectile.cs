@@ -34,6 +34,12 @@ public class InterceptorProjectile : MonoBehaviour
             rb.useGravity = false;
             rb.linearVelocity = initialDirection.normalized * speed;
         }
+        
+        // Face forward immediately when spawned
+        if (initialDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(initialDirection) * Quaternion.Euler(0, modelRotationOffset, 0);
+        }
     }
 
     public void SetRange(float range)
@@ -105,10 +111,15 @@ public class InterceptorProjectile : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        // Check if hit ground
+        // Only react to ground when falling, ignore other collisions
         if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
             Explode();
+        }
+        else if (isFalling)
+        {
+            // Ignore collision with borders/other objects when falling
+            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
         }
     }
 
@@ -118,6 +129,7 @@ public class InterceptorProjectile : MonoBehaviour
         {
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
+        
         Destroy(gameObject);
     }
 
