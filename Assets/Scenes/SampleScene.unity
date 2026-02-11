@@ -949,7 +949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.25
+      value: 4.62
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -957,7 +957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.15
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1863,7 +1863,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1225833074}
   m_Layer: 0
-  m_Name: IsraelTarget (8)
+  m_Name: IsraelTarget (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2393,6 +2393,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InterceptorManager
   InterceptorProjectilePrefab: {fileID: 2398144666967058375, guid: eaae99331ea874ffe8039baf23f2d1db, type: 3}
+  interceptors:
+  - {fileID: 2000931078}
+  - {fileID: 2098764078}
+  - {fileID: 869637070}
+  - {fileID: 911587012}
+  - {fileID: 314453553}
+  - {fileID: 982771194}
+  - {fileID: 1661276639}
+  - {fileID: 749279703}
+  - {fileID: 927679916}
   outlineColor: {r: 0.14421804, g: 0.9339623, b: 0.022027409, a: 0.6745098}
   outlineWidth: 3
   rotationSpeed: 5

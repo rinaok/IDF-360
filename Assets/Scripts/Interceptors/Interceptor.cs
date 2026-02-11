@@ -13,6 +13,7 @@ public class Interceptor : MonoBehaviour
 
     private Outline outline;
     private bool isCoolingDown = false;
+    private float cooldownTimeRemaining = 0f;
 
     void Awake()
     {
@@ -34,7 +35,16 @@ public class Interceptor : MonoBehaviour
 
         if (isCoolingDown)
         {
-            outline.OutlineColor = Color.red;
+            // Yellow when halfway or more through cooldown, red otherwise
+            float cooldownProgress = 1f - (cooldownTimeRemaining / cooldown);
+            if (cooldownProgress >= 0.5f)
+            {
+                outline.OutlineColor = Color.yellow;
+            }
+            else
+            {
+                outline.OutlineColor = Color.red;
+            }
         }
         else if (IsSelected())
         {
@@ -68,7 +78,15 @@ public class Interceptor : MonoBehaviour
 
     private System.Collections.IEnumerator CooldownRoutine()
     {
-        yield return new WaitForSeconds(cooldown);
+        cooldownTimeRemaining = cooldown;
+        
+        while (cooldownTimeRemaining > 0)
+        {
+            cooldownTimeRemaining -= Time.deltaTime;
+            yield return null;
+        }
+        
+        cooldownTimeRemaining = 0f;
         ready = true;
         isCoolingDown = false;
     }

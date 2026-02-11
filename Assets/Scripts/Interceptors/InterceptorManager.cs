@@ -7,6 +7,10 @@ public class InterceptorManager : MonoBehaviour
     [Header("Interceptor Projectile Prefab")]
     public GameObject InterceptorProjectilePrefab;
 
+    [Header("Interceptor Order")]
+    [Tooltip("Manually set the order of interceptors. Leave empty to auto-detect by position.")]
+    public Interceptor[] interceptors;
+
     [Header("Outline Settings")]
     public Color outlineColor = Color.green;
     public float outlineWidth = 5f;
@@ -27,12 +31,37 @@ public class InterceptorManager : MonoBehaviour
         set { _selectedInterceptor = value; }
     }
     private Camera mainCamera;
+    
+    // Keyboard navigation
+    private Interceptor[] allInterceptors;
+    private int currentInterceptorIndex = 0;
 
     private void Awake()
     {
         Instance = this;
         mainCamera = Camera.main;
         CreateRangeIndicator();
+    }
+
+    private void Start()
+    {
+        // Use manually assigned interceptors if provided, otherwise auto-detect
+        if (interceptors != null && interceptors.Length > 0)
+        {
+            allInterceptors = interceptors;
+        }
+        else
+        {
+            // Find all interceptors in the scene and sort by position (left to right)
+            allInterceptors = FindObjectsByType<Interceptor>(FindObjectsSortMode.None);
+            System.Array.Sort(allInterceptors, (a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
+        }
+        
+        // Select the first interceptor by default
+        if (allInterceptors.Length > 0)
+        {
+            SelectInterceptor(allInterceptors[0]);
+        }
     }
 
     void CreateRangeIndicator()
@@ -55,10 +84,44 @@ public class InterceptorManager : MonoBehaviour
 
     private void Update()
     {
+        HandleKeyboardSelection();
+        
         if (selectedInterceptor != null)
         {
             RotateInterceptorTowardsMouse();
             UpdateRangeIndicator();
+        }
+    }
+
+    void HandleKeyboardSelection()
+    {
+        if (allInterceptors == null || allInterceptors.Length == 0) return;
+        
+        // Arrow key navigation
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            currentInterceptorIndex--;
+            if (currentInterceptorIndex < 0)
+                currentInterceptorIndex = allInterceptors.Length - 1;
+            SelectInterceptor(allInterceptors[currentInterceptorIndex]);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            currentInterceptorIndex++;
+            if (currentInterceptorIndex >= allInterceptors.Length)
+                currentInterceptorIndex = 0;
+            SelectInterceptor(allInterceptors[currentInterceptorIndex]);
+        }
+        
+        // Number key direct selection (1-9) - supports both main keyboard and numpad
+        for (int i = 0; i < Mathf.Min(allInterceptors.Length, 9); i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i) || Input.GetKeyDown(KeyCode.Keypad1 + i))
+            {
+                currentInterceptorIndex = i;
+                SelectInterceptor(allInterceptors[i]);
+                break;
+            }
         }
     }
 
