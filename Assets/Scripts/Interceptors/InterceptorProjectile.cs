@@ -29,16 +29,17 @@ public class InterceptorProjectile : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
+        
+        // Face forward immediately when spawned - do this BEFORE setting velocity
+        if (initialDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(initialDirection) * Quaternion.Euler(0, modelRotationOffset, 0);
+        }
+        
         if (rb != null)
         {
             rb.useGravity = false;
             rb.linearVelocity = initialDirection.normalized * speed;
-        }
-        
-        // Face forward immediately when spawned
-        if (initialDirection != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(initialDirection) * Quaternion.Euler(0, modelRotationOffset, 0);
         }
     }
 
@@ -80,7 +81,12 @@ public class InterceptorProjectile : MonoBehaviour
         }
 
         // Rotate to face movement direction
-        if (rb.linearVelocity != Vector3.zero)
+        if (isFalling)
+        {
+            // Face downward when falling (180 degree flip to face down properly)
+            transform.rotation = Quaternion.LookRotation(Vector3.down) * Quaternion.Euler(180, modelRotationOffset, 0);
+        }
+        else if (rb.linearVelocity != Vector3.zero)
         {
             transform.rotation = Quaternion.LookRotation(rb.linearVelocity) * Quaternion.Euler(0, modelRotationOffset, 0);
         }
