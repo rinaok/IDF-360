@@ -13,6 +13,11 @@ public class Missile : MonoBehaviour
     [Header("Effects")]
     public GameObject explosionPrefab;
 
+    [Header("Trajectory Line")]
+    public Color trajectoryColor = new Color(1f, 0f, 0f, 0.5f);
+    public int trajectorySegments = 30;
+    private LineRenderer trajectoryLine;
+
     [Header("Audio")]
     public AudioClip hitSound;
     public AudioClip missSound;
@@ -23,6 +28,38 @@ public class Missile : MonoBehaviour
     void Start()
     {
         startPos = transform.position;
+        CreateTrajectoryLine();
+    }
+
+    void CreateTrajectoryLine()
+    {
+        if (target == null) return;
+        
+        GameObject lineObj = new GameObject("TrajectoryLine");
+        lineObj.transform.SetParent(transform);
+        trajectoryLine = lineObj.AddComponent<LineRenderer>();
+        trajectoryLine.positionCount = trajectorySegments;
+        trajectoryLine.startWidth = 0.15f;
+        trajectoryLine.endWidth = 0.15f;
+        trajectoryLine.material = new Material(Shader.Find("Sprites/Default"));
+        trajectoryLine.startColor = trajectoryColor;
+        trajectoryLine.endColor = trajectoryColor;
+        trajectoryLine.useWorldSpace = true;
+        
+        UpdateTrajectoryLine();
+    }
+
+    void UpdateTrajectoryLine()
+    {
+        if (trajectoryLine == null || target == null) return;
+        
+        for (int i = 0; i < trajectorySegments; i++)
+        {
+            float t = (float)i / (trajectorySegments - 1);
+            Vector3 horizontalPos = Vector3.Lerp(startPos, target.position, t);
+            float height = Mathf.Sin(t * Mathf.PI) * arcHeight;
+            trajectoryLine.SetPosition(i, horizontalPos + Vector3.up * height);
+        }
     }
 
    void Update()
