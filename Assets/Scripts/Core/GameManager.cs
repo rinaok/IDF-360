@@ -19,7 +19,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Audio")]
     public AudioClip backgroundMusic;
+    public AudioClip sirenSound;
     private AudioSource audioSource;
+    
+    [Header("UI")]
+    public PhaseNotificationUI phaseNotificationUI;
 
     private GamePhase currentPhase;
     private float gameStartTime;
@@ -27,6 +31,8 @@ public class GameManager : MonoBehaviour
     private int totalStrikes = 0;
     private int activeMissileCount = 0;
     private bool lastPhaseStarted = false;
+    private int hitCount = 0;
+    private int missCount = 0;
 
     private void Awake()
     {
@@ -46,6 +52,18 @@ public class GameManager : MonoBehaviour
     {
         totalStrikes++;
         activeMissileCount++;
+    }
+
+    public void OnMissileHit()
+    {
+        hitCount++;
+        OnMissileDestroyed();
+    }
+
+    public void OnMissileMiss()
+    {
+        missCount++;
+        OnMissileDestroyed();
     }
 
     public void OnMissileDestroyed()
@@ -100,6 +118,18 @@ public class GameManager : MonoBehaviour
     {
         currentPhase = newPhase;
 
+        // Play siren sound if not gaza phase
+        if (sirenSound != null && newPhase != GamePhase.Gaza)
+        {
+            AudioSource.PlayClipAtPoint(sirenSound, Camera.main.transform.position, 1.5f);
+        }
+        
+        // Show phase notification
+        if (phaseNotificationUI != null)
+        {
+            phaseNotificationUI.ShowPhaseNotification(newPhase);
+        }
+
         if (missileSpawnerManager != null)
         {
             missileSpawnerManager.UpdatePhase(currentPhase);
@@ -114,10 +144,18 @@ public class GameManager : MonoBehaviour
             missileSpawnerManager.StopAllSpawners();
         }
 
+        // Show final score
+        if (phaseNotificationUI != null)
+        {
+            phaseNotificationUI.ShowFinalScore(hitCount, missCount);
+        }
+
         // Reset game state
         gameStarted = false;
         lastPhaseStarted = false;
         activeMissileCount = 0;
+        hitCount = 0;
+        missCount = 0;
 
         // Show start button with "Play Again" text
         StartButtonController startButtonController = FindFirstObjectByType<StartButtonController>();

@@ -39,6 +39,13 @@ public class StartButtonController : MonoBehaviour
             audioSource.PlayOneShot(buttonClickSound);
         }
 
+        // Hide phase notification if visible
+        PhaseNotificationUI phaseNotificationUI = FindFirstObjectByType<PhaseNotificationUI>();
+        if (phaseNotificationUI != null)
+        {
+            phaseNotificationUI.Hide();
+        }
+
         // Start the game
         if (GameManager.Instance != null)
         {

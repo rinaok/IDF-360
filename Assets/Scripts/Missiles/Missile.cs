@@ -65,10 +65,10 @@ public class Missile : MonoBehaviour
             AudioSource.PlayClipAtPoint(missSound, transform.position, 4.0f);
         }
         
-        // Notify GameManager that missile is destroyed
+        // Notify GameManager that missile missed
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnMissileDestroyed();
+            GameManager.Instance.OnMissileMiss();
         }
         
         Destroy(gameObject);
@@ -88,10 +88,10 @@ public class Missile : MonoBehaviour
             AudioSource.PlayClipAtPoint(hitSound, transform.position, 4.0f);
         }
         
-        // Notify GameManager that missile is destroyed
+        // Notify GameManager that missile was hit
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnMissileDestroyed();
+            GameManager.Instance.OnMissileHit();
         }
         
         Destroy(gameObject);
