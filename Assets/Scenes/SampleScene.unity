@@ -2856,10 +2856,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   missileSpawnerManager: {fileID: 212790697}
   startingPhase: 0
-  phase1Duration: 20
-  phase2Duration: 20
-  phase3Duration: 20
-  phase4Duration: 0.1
+  phase1Duration: 15
+  phase2Duration: 15
+  phase3Duration: 15
+  phase4Duration: 15
   gameDuration: 60
   backgroundMusic: {fileID: 8300000, guid: d41be9c43a24a4e769356673bcfa4fd0, type: 3}
   sirenSound: {fileID: 8300000, guid: 370c635e9c0fb4f8ca8c7527b6486723, type: 3}
