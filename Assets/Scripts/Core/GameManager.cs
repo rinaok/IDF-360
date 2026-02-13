@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     private bool gameStarted = false;
     private int totalStrikes = 0;
     private int activeMissileCount = 0;
+    private bool lastPhaseStarted = false;
     private int hitCount = 0;
     private int missCount = 0;
 
@@ -103,6 +104,7 @@ public class GameManager : MonoBehaviour
         activeMissileCount = 0;
         hitCount = 0;
         missCount = 0;
+        lastPhaseStarted = false;
         
         // Restart background music from the beginning
         if (backgroundMusic != null && audioSource != null)
@@ -138,7 +140,7 @@ public class GameManager : MonoBehaviour
         }
         
         // Wait for remaining missiles to be destroyed (with a safety timeout)
-        float waitTimeout = 20f;
+        float waitTimeout = 30f;
         float waitTimer = 0f;
         while (activeMissileCount > 0 && waitTimer < waitTimeout)
         {
@@ -162,7 +164,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(phase3Duration);
 
         SetPhase(GamePhase.Iran);
-        // Game will end after 60 seconds total
+        lastPhaseStarted = true;
+        // Don't wait for time - game will end when last missile hits/misses
     }
 
     public void SetPhase(GamePhase newPhase)
