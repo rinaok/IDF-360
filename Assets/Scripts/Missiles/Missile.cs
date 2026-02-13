@@ -5,7 +5,7 @@ public class Missile : MonoBehaviour
 {
     public Transform target; 
 
-    public float flightDuration = 4f;
+    public float speed = 10f;
     public float arcHeight = 5f;
     [Tooltip("Rotation offset if the model faces the wrong direction (0=correct, 180=backwards, 90/-90=sideways)")]
     public float modelRotationOffset = 0f;
@@ -24,10 +24,19 @@ public class Missile : MonoBehaviour
 
     private Vector3 startPos;
     private float timer;
+    private float flightDuration;
 
     void Start()
     {
         startPos = transform.position;
+        
+        // Calculate flight duration from speed and distance
+        if (target != null)
+        {
+            float distance = Vector3.Distance(startPos, target.position);
+            flightDuration = distance / speed;
+        }
+        
         CreateTrajectoryLine();
     }
 
