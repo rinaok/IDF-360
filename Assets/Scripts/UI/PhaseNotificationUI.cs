@@ -22,7 +22,17 @@ public class PhaseNotificationUI : MonoBehaviour
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
         
-        // Start invisible
+        // Start visible so initial text shows before game starts
+        canvasGroup.alpha = 1;
+    }
+    
+    public void ClearInitialText()
+    {
+        if (phaseNotificationText != null)
+        {
+            phaseNotificationText.text = string.Empty;
+        }
+        // Hide after clearing
         canvasGroup.alpha = 0;
     }
 

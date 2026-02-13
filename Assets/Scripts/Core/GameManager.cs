@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public float phase2Duration = 15f;
     public float phase3Duration = 15f;
     public float phase4Duration = 15f;
+    public float gameDuration = 60f;
 
     [Header("Audio")]
     public AudioClip backgroundMusic;
@@ -69,12 +70,6 @@ public class GameManager : MonoBehaviour
     public void OnMissileDestroyed()
     {
         activeMissileCount--;
-        
-        // Check if game should end (last phase and no missiles left)
-        if (lastPhaseStarted && (activeMissileCount < 0))
-        {
-            OnGameComplete();
-        }
     }
 
     private void Start()
@@ -91,11 +86,70 @@ public class GameManager : MonoBehaviour
     {
         if (gameStarted) return;
         
+        // Stop any lingering coroutines from previous game
+        StopAllCoroutines();
+        
+        // Destroy all remaining missiles and projectiles from previous game
+        foreach (Missile missile in FindObjectsByType<Missile>(FindObjectsSortMode.None))
+        {
+            Destroy(missile.gameObject);
+        }
+        foreach (InterceptorProjectile projectile in FindObjectsByType<InterceptorProjectile>(FindObjectsSortMode.None))
+        {
+            Destroy(projectile.gameObject);
+        }
+        
+        // Reset all counters
+        totalStrikes = 0;
+        activeMissileCount = 0;
+        hitCount = 0;
+        missCount = 0;
+        lastPhaseStarted = false;
+        
+        // Restart background music from the beginning
+        if (backgroundMusic != null && audioSource != null)
+        {
+            audioSource.Stop();
+            audioSource.clip = backgroundMusic;
+            audioSource.time = 0f;
+            audioSource.Play();
+        }
+        
+        // Clear initial placeholder text from UI
+        if (phaseNotificationUI != null)
+        {
+            phaseNotificationUI.ClearInitialText();
+        }
+        
         gameStarted = true;
         gameStartTime = Time.time;
         
         SetPhase(startingPhase);
         StartCoroutine(GamePhaseProgression());
+        StartCoroutine(GameDurationTimer());
+    }
+
+    private IEnumerator GameDurationTimer()
+    {
+        yield return new WaitForSeconds(gameDuration);
+        
+        // Stop all spawners after game duration
+        if (missileSpawnerManager != null)
+        {
+            missileSpawnerManager.StopAllSpawners();
+        }
+        
+        // Wait for remaining missiles to be destroyed (with a safety timeout)
+        float waitTimeout = 15f;
+        float waitTimer = 0f;
+        while (activeMissileCount > 0 && waitTimer < waitTimeout)
+        {
+            waitTimer += 0.5f;
+            yield return new WaitForSeconds(0.5f);
+        }
+        
+        // End game
+        OnGameComplete();
     }
 
     private IEnumerator GamePhaseProgression()
@@ -138,6 +192,9 @@ public class GameManager : MonoBehaviour
 
     private void OnGameComplete()
     {
+        // Stop all coroutines to prevent further phase changes
+        StopAllCoroutines();
+        
         // Stop all spawners
         if (missileSpawnerManager != null)
         {
@@ -150,12 +207,8 @@ public class GameManager : MonoBehaviour
             phaseNotificationUI.ShowFinalScore(hitCount, missCount);
         }
 
-        // Reset game state
+        // Mark game as not started so StartGame can be called again
         gameStarted = false;
-        lastPhaseStarted = false;
-        activeMissileCount = 0;
-        hitCount = 0;
-        missCount = 0;
 
         // Show start button with "Play Again" text
         StartButtonController startButtonController = FindFirstObjectByType<StartButtonController>();

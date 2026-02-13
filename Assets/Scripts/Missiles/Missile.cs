@@ -25,6 +25,7 @@ public class Missile : MonoBehaviour
     private Vector3 startPos;
     private float timer;
     private float flightDuration;
+    private bool isResolved = false;
 
     void Start()
     {
@@ -99,6 +100,9 @@ public class Missile : MonoBehaviour
 
     void HitTarget()
     {
+        if (isResolved) return;
+        isResolved = true;
+
         // Spawn explosion at ground hit position
         if (explosionPrefab != null && target != null)
         {
@@ -122,6 +126,9 @@ public class Missile : MonoBehaviour
 
     public void Intercept()
     {
+        if (isResolved) return;
+        isResolved = true;
+
         // Spawn explosion at intercept position
         if (explosionPrefab != null)
         {
@@ -141,5 +148,15 @@ public class Missile : MonoBehaviour
         }
         
         Destroy(gameObject);
+    }
+
+    void OnDestroy()
+    {
+        // Safety net: if missile is destroyed without being resolved, decrement count
+        if (!isResolved && GameManager.Instance != null)
+        {
+            isResolved = true;
+            GameManager.Instance.OnMissileDestroyed();
+        }
     }
 }
