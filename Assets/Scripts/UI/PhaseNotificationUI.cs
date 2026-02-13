@@ -46,7 +46,7 @@ public class PhaseNotificationUI : MonoBehaviour
     public void ShowFinalScore(int hits, int misses)
     {
         int totalMissiles = hits + misses;
-        string victoryMessage = hits > misses ? "\n\nYou saved Israel!" : "\n\nYou failed to save Israel :(";
+        string victoryMessage = hits > misses ? "\n\nGood Job!" : "\n\nYou failed to save Israel :(";
         phaseNotificationText.text = $"Final Score:\nHits: {hits}\nMisses: {misses}{victoryMessage}";
         StartCoroutine(ShowFinalScoreCoroutine());
     }
