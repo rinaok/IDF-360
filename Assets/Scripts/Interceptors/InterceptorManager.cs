@@ -291,4 +291,30 @@ public class InterceptorManager : MonoBehaviour
 
         return nearest;
     }
+
+    public Missile FindMissileClosestToAim(Ray aimRay)
+    {
+        if (selectedInterceptor == null) return null;
+
+        Missile[] missiles = FindObjectsByType<Missile>(FindObjectsSortMode.None);
+        Missile bestMissile = null;
+        float bestDistance = Mathf.Infinity;
+
+        foreach (Missile missile in missiles)
+        {
+            if (missile == null) continue;
+            
+            // Calculate how close the missile is to the aiming ray
+            Vector3 missilePos = missile.transform.position;
+            float distToRay = Vector3.Cross(aimRay.direction, missilePos - aimRay.origin).magnitude;
+            
+            if (distToRay < bestDistance)
+            {
+                bestDistance = distToRay;
+                bestMissile = missile;
+            }
+        }
+
+        return bestMissile;
+    }
 }

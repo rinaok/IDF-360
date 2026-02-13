@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
         
         // Check if game should end (last phase and no missiles left)
         // or if 63 second timer has expired after last phase started
-        if (lastPhaseStarted && (activeMissileCount <= 0 || GetGameTime() >= 63f))
+        if (lastPhaseStarted && (activeMissileCount <= 0 || GetGameTime() >= 70f))
         {
             OnGameComplete();
         }

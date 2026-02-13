@@ -271,7 +271,7 @@ PrefabInstance:
       objectReference: {fileID: 704028137}
     - target: {fileID: 3203614904147658270, guid: 5237ed11307624c27a1ece3e1a9bb47a, type: 3}
       propertyPath: spawnRate
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3203614904147658270, guid: 5237ed11307624c27a1ece3e1a9bb47a, type: 3}
       propertyPath: flashPrefab
@@ -1028,7 +1028,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2244,7 +2244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.56
+      value: -2.54
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2252,7 +2252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.75
+      value: -4.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1db8b6ab340ff4863949c761eec6a7b8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3599,7 +3599,7 @@ PrefabInstance:
       objectReference: {fileID: 704028137}
     - target: {fileID: 3203614904147658270, guid: 5237ed11307624c27a1ece3e1a9bb47a, type: 3}
       propertyPath: spawnRate
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3203614904147658270, guid: 5237ed11307624c27a1ece3e1a9bb47a, type: 3}
       propertyPath: flashPrefab

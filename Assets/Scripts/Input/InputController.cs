@@ -36,13 +36,13 @@ public class InputController : MonoBehaviour
             }
         }
 
-        // If an interceptor is selected, fire at nearest missile on any click (not on interceptor)
+        // If an interceptor is selected, fire at the missile closest to click direction
         if (InterceptorManager.Instance != null && InterceptorManager.Instance.HasSelectedInterceptor())
         {
-            Missile nearestMissile = InterceptorManager.Instance.FindNearestMissile();
-            if (nearestMissile != null)
+            Missile targetMissile = InterceptorManager.Instance.FindMissileClosestToAim(ray);
+            if (targetMissile != null)
             {
-                InterceptorManager.Instance.FireAt(nearestMissile);
+                InterceptorManager.Instance.FireAt(targetMissile);
             }
         }
     }
