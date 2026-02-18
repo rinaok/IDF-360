@@ -207,6 +207,21 @@ public class InterceptorManager : MonoBehaviour
         }
 
         selectedInterceptor = interceptor;
+        
+        // Update the current index to match the selected interceptor
+        // This ensures keyboard navigation continues from the mouse-selected interceptor
+        if (allInterceptors != null)
+        {
+            for (int i = 0; i < allInterceptors.Length; i++)
+            {
+                if (allInterceptors[i] == interceptor)
+                {
+                    currentInterceptorIndex = i;
+                    break;
+                }
+            }
+        }
+        
         // Interceptor now manages its own outline color
     }
 

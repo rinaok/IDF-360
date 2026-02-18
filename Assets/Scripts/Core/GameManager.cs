@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         Instance = this;
         
         // Setup audio source
