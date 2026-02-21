@@ -11,4 +11,4 @@ https://rinaok.itch.io/idf-360
 
 <img width="1473" height="916" alt="Screenshot 2026-02-14 at 0 03 14" src="https://github.com/user-attachments/assets/bed15782-b199-47a5-88a9-16d7468ddb5e" />
 <img width="1601" height="998" alt="Screenshot 2026-02-14 at 0 03 40 (1)" src="https://github.com/user-attachments/assets/9654820b-6914-4904-b9d1-b8ab153c32c7" />
-<img width="1473" height="916" alt="Screenshot 2026-02-14 at 0 03 14" src="https://github.com/user-attachments/assets/712c1554-2988-4574-be85-1a481586e4f0" />
+<img width="1465" height="914" alt="Screenshot 2026-02-14 at 0 04 34" src="https://github.com/user-attachments/assets/4da17d4d-0abf-4322-ac2f-8b6ac0cbce88" />
